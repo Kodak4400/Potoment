@@ -17,10 +17,10 @@ gem 'carrierwave'
 # heroku
 gem 'heroku'
 # config
-gem 'config'
+#gem 'config'
 # json
-gem 'json'
+#gem 'json'
 # line-bot-api
 gem 'line-bot-api'
 # rack
-gem 'rack'
+#gem 'rack'
