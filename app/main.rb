@@ -60,8 +60,8 @@ post '/callback' do
 #          type: 'image'
 #          originalContentUrl: 
 #          previewImageUrl: 
-           type: 'text'
-           text: "テスト"
+           type: 'text',
+           text: 'テスト'
         }
         client.reply_message(event['replyToken'], message)
       when Line::Bot::Event::MessageType::Video
