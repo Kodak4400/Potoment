@@ -4,9 +4,9 @@ Thumbs.db
 app/config/cloudinary.yml
 
 # bundler state
-.bundle
-vendor/bundle/
-ruby/
+/.bundle
+/vendor/bundle/
+/vendor/ruby/
 
 # various artifacts
 **.war
