@@ -61,9 +61,9 @@ post '/callback' do
 #          originalContentUrl: 
 #          previewImageUrl: 
            type: 'text'
-           text: response.body
+           text: "テスト"
         }
-        p "#{response.code} , #{response.body}"
+        p tf
         client.reply_message(event['replyToken'], message)
       when Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
