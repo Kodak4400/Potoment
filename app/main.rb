@@ -21,10 +21,10 @@ end
 
 # @clientがnull or falseの場合、代入する
 def client
-  @client ||= Line::Bot::Client.new do |config|
+  @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
     config.chaneel_token = ENV["LINE_CHANNEL_TOKEN"]
-  end
+  }
 end
 
 post '/callback' do
@@ -39,7 +39,7 @@ post '/callback' do
 
   # イベント情報を取得
   events = client.parse_events_from(body)
-  events.each do |event|
+  events.each { |event|
     case event
     when Line::Bot::Event::Message
       case event.type
@@ -58,12 +58,10 @@ post '/callback' do
         tf.write(response.body)
       end
     end
-  end
+  }
 
  "OK"
 end
-
-
 
 # ---------------------------------------------
 
