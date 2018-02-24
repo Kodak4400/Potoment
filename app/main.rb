@@ -27,6 +27,10 @@ def client
   }
 end
 
+def cloudinary_uploader
+
+end
+
 post '/callback' do
   # リクエストメソッドのポストデータを取得 
   body = request.body.read
@@ -53,9 +57,11 @@ post '/callback' do
         client.reply_message(event['replyToken'], message)
       # メッセージタイプが画像、動画の場合
       when Line::Bot::Event::MessageType::Image
+        path = '.tmp/temp.jpg'
         response = client.get_message_content(event.message['id'])
-        tf = Tempfile.open("content")
-        tf.write(response.body)
+        File.open(path, 'wb') do |f|
+          f.write(response.body) 
+        end  
         message = {
 #          type: 'image'
 #          originalContentUrl: 
@@ -63,7 +69,7 @@ post '/callback' do
            type: 'text',
            text: 'テスト'
         }
-        p "#{response.body}"
+        Cloudinary::Uploader.upload(path, :width => 150, :height => 100, :crop => :limit)
         client.reply_message(event['replyToken'], message)
       when Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
@@ -75,6 +81,45 @@ post '/callback' do
 
  "OK"
 end
+
+
+
+
+
+
+# 画像のアップロード
+# アップロード画面
+get '/upload' do
+  images_name = Dir.glob("app/public/images/*")
+  @images_path=[] 
+
+  images_name.each do |image|
+    @images_path << image.gsub("app/public/","/")
+  end
+  erb :upload
+end
+
+# Cloudinaryへ画像アップロード
+post '/cloudinary_upload' do
+  # アップロード画面のパラメータ有無判定
+  # params内のデータ
+  # :tupe -> 画像の保存形式
+  # :head -> ヘッダー
+  # :file -> erbのname
+  # :filename -> ファイル名
+  # :tempfile -> 画像ファイルのリファレンス
+  if params[:file]
+    save_path = "./app/public/images/#{params[:file][:filename]}"
+    File.open(save_path, 'wb') do |f|
+      f.write params[:file][:tempfile].read
+    end
+    Cloudinary::Uploader.upload(save_path, :width => 150, :height => 100, :crop => :limit)
+  else
+   @massage = "アップロード失敗"
+  end
+  erb :upload
+end
+
 
 # ---------------------------------------------
 
