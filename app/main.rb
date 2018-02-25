@@ -57,9 +57,8 @@ post '/callback' do
         client.reply_message(event['replyToken'], message)
       # メッセージタイプが画像、動画の場合
       when Line::Bot::Event::MessageType::Image
-        path = '/tmp/temp.jpg'
         response = client.get_message_content(event.message['id'])
-        file = File.open(path, "w+b")
+        file = File.open("/tmp/temp.jsp", "w+b")
         file.write(response.body)
         MessageImage.create!(message: message, value: file)
         File.unlink(file)
@@ -73,7 +72,7 @@ post '/callback' do
            type: 'text',
            text: 'テスト'
         }
-        Cloudinary::Uploader.upload(path, :width => 150, :height => 100, :crop => :limit)
+#        Cloudinary::Uploader.upload(path, :width => 150, :height => 100, :crop => :limit)
         client.reply_message(event['replyToken'], message)
       when Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
