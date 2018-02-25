@@ -57,13 +57,12 @@ post '/callback' do
         client.reply_message(event['replyToken'], message)
       # メッセージタイプが画像、動画の場合
       when Line::Bot::Event::MessageType::Image
+        path = "/tmp/temp.jsp"
         response = client.get_message_content(event.message['id'])
-        file = File.open("/tmp/temp.jsp", "w+b")
+        file = File.open(path, "w+b")
         file.write(response.body)
-#        MessageImage.create!(message: message, value: file)
-         File.unlink(file)
-         result = system("ls -l /tmp")
-         print result
+        puts path
+        File.unlink(file)
 #        File.open(path, 'wb') do |f|
 #          f.write(response.body) 
 #        end
