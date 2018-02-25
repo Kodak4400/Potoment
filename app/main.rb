@@ -57,13 +57,13 @@ post '/callback' do
         client.reply_message(event['replyToken'], message)
       # メッセージタイプが画像、動画の場合
       when Line::Bot::Event::MessageType::Image
-#        path = './tmp/sample.txt'
+        path = './tmp/sample.txt'
         response = client.get_message_content(event.message['id'])
-#        file = File.open(path, "wb")
-#        file.write(response.body)
-        File.open("./tmp/test.txt", "wb") do |f|
-          f.puts("Hello world!")
-        end
+        file = File.open(path, "wb")
+        file.write(response.body)
+#        File.open("./tmp/test.txt", "wb") do |f|
+#          f.puts("Hello world!")
+#        end
         puts system('ls -ltr ./tmp') 
         message = {
 #          type: 'image'
