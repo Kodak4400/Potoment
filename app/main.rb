@@ -61,8 +61,8 @@ post '/callback' do
         response = client.get_message_content(event.message['id'])
 #        file = File.open(path, "wb")
 #        file.write(response.body)
-        File.open(path, 'wb') do |f|
-          f.write(response.body) 
+        File.open(path, 'w+b') do |f|
+          f.write(response.body).read
         end
         message = {
 #          type: 'image'
