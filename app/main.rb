@@ -64,6 +64,7 @@ post '/callback' do
         File.open("./tmp/test.txt", "wb") do |f|
           f.puts("Hello world!")
         end
+        puts system('ls -ltr ./tmp') 
         message = {
 #          type: 'image'
 #          originalContentUrl: 
