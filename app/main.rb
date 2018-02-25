@@ -27,10 +27,6 @@ def client
   }
 end
 
-def cloudinary_uploader
-
-end
-
 post '/callback' do
   # リクエストメソッドのポストデータを取得 
   body = request.body.read
@@ -55,23 +51,21 @@ post '/callback' do
         }
         # メッセージを返す
         client.reply_message(event['replyToken'], message)
-      # メッセージタイプが画像、動画の場合
+      # メッセージタイプが画像の場合
       when Line::Bot::Event::MessageType::Image
-        path = './tmp/test.jpg'
+        path = "./tmp/test.jpg"
         response = client.get_message_content(event.message['id'])
         file = File.open(path, "wb")
         file.write(response.body)
         Cloudinary::Uploader.upload(path, :width => 150, :height => 100, :crop => :limit)
         puts system('ls -ltr ./tmp') 
         message = {
-#          type: 'image'
-#          originalContentUrl: 
-#          previewImageUrl: 
            type: 'text',
-           text: 'テスト'
+           text: '画像をアップロードしました。'
         }
         client.reply_message(event['replyToken'], message)
-#        File.unlink(file)
+        File.unlink(file)
+#        erb :index
       when Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
         tf = Tempfile.open("content")
@@ -83,10 +77,23 @@ post '/callback' do
  "OK"
 end
 
+# Cloudinaryから画像取得
+get '/view_page' do
+#  include CloudinaryHelper
+#  @config = settings.cloud_name
+#  @config 
+#  @cloud_img = CloudinaryHelper.cl_image_tag("sample.jpg", :width=>300, :height=>100, :crop=>"scale") 
+  @cloud_img = Cloudinary::Utils.cloudinary_url("sample.jpg", :height=>154, :width=>394, :crop=>"scale") 
+  puts @cloud_img
+  erb :index
+end
+  
+# 単純画像表示
+get '/test_page' do
+  erb :test_page
+end
 
-
-
-
+# -----------------------------------------------------------------------
 
 # 画像のアップロード
 # アップロード画面
@@ -120,9 +127,6 @@ post '/cloudinary_upload' do
   end
   erb :upload
 end
-
-
-# ---------------------------------------------
 
 # Cloudinaryから画像取得
 get '/cloudinary_pull' do
