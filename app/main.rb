@@ -71,7 +71,7 @@ post '/callback' do
            type: 'text',
            text: 'テスト'
         }
-        Cloudinary::Uploader.upload(path, :width => 150, :height => 100, :crop => :limit)
+#        Cloudinary::Uploader.upload(path, :width => 150, :height => 100, :crop => :limit)
         client.reply_message(event['replyToken'], message)
 #        File.unlink(file)
       when Line::Bot::Event::MessageType::Video
