@@ -61,7 +61,9 @@ post '/callback' do
         file = File.open("/tmp/temp.jsp", "w+b")
         file.write(response.body)
 #        MessageImage.create!(message: message, value: file)
-#        File.unlink(file)
+         File.unlink(file)
+         result = system("ls -l /tmp")
+         print result
 #        File.open(path, 'wb') do |f|
 #          f.write(response.body) 
 #        end
