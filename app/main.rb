@@ -59,11 +59,11 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Image
         path = './tmp/temp.jpg'
         response = client.get_message_content(event.message['id'])
-        file = File.open(path, "wb")
-        file.write(response.body)
-#        File.open(path, 'wb') do |f|
-#          f.write(response.body) 
-#        end
+#        file = File.open(path, "wb")
+#        file.write(response.body)
+        File.open(path, 'wb') do |f|
+          f.write(response.body) 
+        end
         message = {
 #          type: 'image'
 #          originalContentUrl: 
