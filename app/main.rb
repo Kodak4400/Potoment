@@ -67,7 +67,9 @@ post '/callback' do
         }
         client.reply_message(event['replyToken'], message)
         File.unlink(file)
-#        erb :index
+        @cloud_img = Cloudinary::Utils.cloudinary_url("#{pid}.jpg", :height=>154, :width=>394, :crop=>"scale") 
+        puts @cloud_img
+        erb :index
       when Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
         tf = Tempfile.open("content")
@@ -79,17 +81,6 @@ post '/callback' do
  "OK"
 end
 
-# Cloudinaryから画像取得
-get '/view_page' do
-#  include CloudinaryHelper
-#  @config = settings.cloud_name
-#  @config 
-#  @cloud_img = CloudinaryHelper.cl_image_tag("sample.jpg", :width=>300, :height=>100, :crop=>"scale") 
-  @cloud_img = Cloudinary::Utils.cloudinary_url("sample.jpg", :height=>154, :width=>394, :crop=>"scale") 
-  puts @cloud_img
-  erb :index
-end
-  
 # 単純画像表示
 get '/test_page' do
   erb :test_page
