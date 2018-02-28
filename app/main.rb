@@ -11,7 +11,8 @@ config_file 'config/cloudinary.yml'
 require 'json'
 require 'carrierwave'
 require 'cloudinary'
-#require 'cloudinary/helper'
+
+require 'date'
 
 require 'line/bot'
 
@@ -54,10 +55,11 @@ post '/callback' do
       # メッセージタイプが画像の場合
       when Line::Bot::Event::MessageType::Image
         path = './tmp/test.jpg'
+        pid = DateTime.now.strftime('%Y%m%d%H%M%S')
         response = client.get_message_content(event.message['id'])
         file = File.open(path, "wb")
         file.write(response.body)
-        Cloudinary::Uploader.upload(path, :public_id => 'test01', :width => 150, :height => 100, :crop => :limit)
+        Cloudinary::Uploader.upload(path, :public_id => pid, :width => 150, :height => 100, :crop => :limit)
         puts system('ls -ltr ./tmp') 
         message = {
            type: 'text',
