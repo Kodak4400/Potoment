@@ -69,6 +69,7 @@ post '/callback' do
         File.unlink(file)
         @cloud_img = Cloudinary::Utils.cloudinary_url("#{pid}.jpg", :height=>154, :width=>394, :crop=>"scale") 
         puts @cloud_img
+        @page_title = "index message"
         erb :index
       when Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
@@ -89,8 +90,7 @@ set :server, 'thin'
 set :sockets, []
 
 get '/index' do
-  @page_title = "index message"
-#  erb :index
+  erb :index
 end
 
 get '/websocket' do
