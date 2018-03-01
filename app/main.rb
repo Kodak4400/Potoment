@@ -90,7 +90,7 @@ set :server, 'thin'
 set :sockets, []
 
 get '/potoment_page' do
-#  erb :potoment_page
+  erb :potoment_page
 end
 
 get '/websocket' do
@@ -245,7 +245,7 @@ get '/index3' do
   erb :index3
 end
 
-get '/websocket' do
+get '/websocket2' do
   # WebSocket通信かどうか
   if request.websocket?
     # WebSocket通信の場合、wsにセッティング情報書き込み
