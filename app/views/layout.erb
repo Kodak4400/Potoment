@@ -17,12 +17,12 @@
     ws.onclose = () => console.log('connection closed');
     // サーバーからsendされた時に実行される関数 m=sendが引数
     ws.onmessage = m => {
-      let objimg = document.createElement('img');
+      // let objimg = document.createElement('img');
       // objimg.src = m.data;
       console.log('aaa');
-      objimg.src = "./public/images/CHOYA_SINGLE.JPG";
-      let objBody = document.getElementsByTagName("body").item(0);
-      objBody.appendChild(objimg);
+      // objimg.src = "./public/images/CHOYA_SINGLE.JPG";
+      // let objBody = document.getElementsByTagName("body").item(0);
+      // objBody.appendChild(objimg);
     }
 
     // テキストボックスをクリックされた時

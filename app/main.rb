@@ -105,14 +105,14 @@ get '/websocket' do
         settings.sockets << ws
       end
       # WebSocket通信によってメッセージが来た時の処理をまとめる
-      ws.onmessage do |msg|
+      # ws.onmessage do |msg|
         settings.sockets.each do |s|
           # WebSocket通信でsndする
           # WebSocket通信で、クライアントに向かって情報をおくる
           # sendメソッドでは、１クライアントにしか送れない。
           s.send(msg)
         end
-      end
+      # end
       # WebSocket通信が切断された時の処理をまとめる
       ws.onclose do
         # wsを削除
