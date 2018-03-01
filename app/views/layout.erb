@@ -9,7 +9,7 @@
     let msgbox = document.getElementById('file');
     let form = document.getElementById('form');
     let sendFile = document.getElementById('send-file');
-    let ws = new WebSocket('ws://' + window.location.host + '/potoment_page');
+    let ws = new WebSocket('https://' + window.location.host + '/potoment_page');
 
     // 接続開始メソッド ()なので引数なし
     ws.onopen = () => console.log('connection opened');
