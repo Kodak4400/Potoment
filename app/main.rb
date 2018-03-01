@@ -70,7 +70,7 @@ post '/callback' do
         @cloud_img = Cloudinary::Utils.cloudinary_url("#{pid}.jpg", :height=>154, :width=>394, :crop=>"scale") 
         puts @cloud_img
         @page_title = "index message"
-        erb :index
+        erb :potoment_page
       when Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
         tf = Tempfile.open("content")
@@ -89,7 +89,7 @@ set :server, 'thin'
 # WebSocket通信で情報が更新された時にレスポンスを送る先を入れる
 set :sockets, []
 
-get '/index' do
+get '/potoment_page' do
   erb :index
 end
 
