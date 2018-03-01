@@ -90,7 +90,7 @@ set :server, 'thin'
 set :sockets, []
 
 get '/potoment_page' do
-  erb :index
+  erb :potoment_page
 end
 
 get '/websocket' do
