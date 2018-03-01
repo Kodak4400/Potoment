@@ -81,6 +81,58 @@ post '/callback' do
  "OK"
 end
 
+# Cloudinaryから画像取得
+# WebSocketでチャットを作る
+# サーバとして'thin'を使う
+set :server, 'thin'
+# WebSocket通信で情報が更新された時にレスポンスを送る先を入れる
+set :sockets, []
+
+get '/index' do
+  @page_title = "index message"
+#  erb :index
+end
+
+get '/websocket' do
+  # WebSocket通信かどうか
+  if request.websocket?
+    # WebSocket通信の場合、wsにセッティング情報書き込み
+    # wsは、サーバーの情報やクライアントの情報が詰まった変数
+    request.websocket do |ws|
+      # WebSocket通信のための接続がされようとしている時の処理をまとめる
+      ws.onopen do
+        # set :socketsを呼び出し
+        settings.sockets << ws
+      end
+      # WebSocket通信によってメッセージが来た時の処理をまとめる
+      ws.onmessage do |msg|
+        settings.sockets.each do |s|
+          # WebSocket通信でsndする
+          # WebSocket通信で、クライアントに向かって情報をおくる
+          # sendメソッドでは、１クライアントにしか送れない。
+          s.send(msg)
+        end
+      end
+      # WebSocket通信が切断された時の処理をまとめる
+      ws.onclose do
+        # wsを削除
+        settings.sockets.delete(ws)
+      end
+    end
+  end
+end
+  
+  
+get '/cloudinary_pull' do
+#  include CloudinaryHelper
+#  @config = settings.cloud_name
+#  @config 
+#  @cloud_img = CloudinaryHelper.cl_image_tag("sample.jpg", :width=>300, :height=>100, :crop=>"scale") 
+  @cloud_img = Cloudinary::Utils.cloudinary_url("sample.jpg", :height=>154, :width=>394, :crop=>"scale") 
+  puts @cloud_img  
+  erb :index
+end
+
 # 単純画像表示
 get '/test_page' do
   erb :test_page
@@ -189,8 +241,8 @@ set :server, 'thin'
 # WebSocket通信で情報が更新された時にレスポンスを送る先を入れる
 set :sockets, []
 
-get '/index' do
-  erb :index
+get '/index3' do
+  erb :index3
 end
 
 get '/websocket' do
