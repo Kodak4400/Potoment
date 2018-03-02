@@ -90,7 +90,7 @@ set :server, 'thin'
 set :sockets, []
 
 get '/potoment_page' do
-  settings.sockets.send("bbbb")
+#  settings.sockets.send("bbbb")
 end
 
 get '/websocket' do
