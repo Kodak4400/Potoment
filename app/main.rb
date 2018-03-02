@@ -90,7 +90,8 @@ set :server, 'thin'
 set :sockets, []
 
 get '/potoment_page' do
-#  settings.sockets.send("bbbb")
+  settings.sockets.send("bbbb")
+  erb :potoment_page 
 end
 
 get '/websocket' do
@@ -119,7 +120,7 @@ get '/websocket' do
         settings.sockets.delete(ws)
       end
     end
-#    settings.sockets.send("aaa")
+    settings.sockets.send("aaa")
   end
 end
   
