@@ -120,7 +120,7 @@ get '/websocket' do
         settings.sockets.delete(ws)
       end
     end
-    settings.sockets.send("aaa")
+#    settings.sockets.send("aaa")
   end
 end
   
