@@ -60,7 +60,7 @@ post '/callback' do
         response = client.get_message_content(event.message['id'])
         file = File.open(path, "wb")
         file.write(response.body)
-        Cloudinary::Uploader.upload(path, :public_id => pid, :width => 150, :height => 100, :crop => :limit)
+        Cloudinary::Uploader.upload(path, :public_id => pid, :width => 200, :height => 150, :crop => :limit)
         puts system('ls -ltr ./tmp') 
         message = {
            type: 'text',
@@ -104,12 +104,13 @@ get '/websocket' do
       end
       # WebSocket通信によってメッセージが来た時の処理をまとめる
       ws.onmessage do |msg|
-        settings.sockets.each do |s|
+        puts msg
+#        settings.sockets.each do |s|
           # WebSocket通信でsndする
           # WebSocket通信で、クライアントに向かって情報をおくる
           # sendメソッドでは、１クライアントにしか送れない。
-          s.send(msg)
-        end
+#          s.send(msg)
+#        end
       end
       # WebSocket通信が切断された時の処理をまとめる
       ws.onclose do
