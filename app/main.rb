@@ -52,7 +52,7 @@ post '/callback' do
         }
         # メッセージを返す
         client.reply_message(event['replyToken'], message)
-        sk_message        
+        websocket_message
       # メッセージタイプが画像の場合
       when Line::Bot::Event::MessageType::Image
         path = './tmp/test.jpg'
@@ -68,10 +68,11 @@ post '/callback' do
         }
         client.reply_message(event['replyToken'], message)
         File.unlink(file)
-        @cloud_img = Cloudinary::Utils.cloudinary_url("#{pid}.jpg", :height=>154, :width=>394, :crop=>"scale") 
-        puts @cloud_img
-        @page_title = "index message"
-        erb :potoment_page
+        websocket_image(pid)
+        #@cloud_img = Cloudinary::Utils.cloudinary_url("#{pid}.jpg", :height=>154, :width=>394, :crop=>"scale") 
+        #puts @cloud_img
+        #@page_title = "index message"
+        #erb :potoment_page
       when Line::Bot::Event::MessageType::Video
         response = client.get_message_content(event.message['id'])
         tf = Tempfile.open("content")
@@ -90,8 +91,7 @@ set :server, 'thin'
 # WebSocket通信で情報が更新された時にレスポンスを送る先を入れる
 set :sockets, []
 
-get '/potoment_page' do
-#  settings.sockets.send("bbbb")
+get '/' do
   erb :potoment_page 
 end
 
@@ -120,9 +120,15 @@ get '/websocket' do
         # wsを削除
         settings.sockets.delete(ws)
       end
-      def sk_message
+      def websocket_message
         settings.sockets.each do |s|
           s.send("aaa")
+        end
+      end
+      def websocket_image(img_name)
+        settings.sockets.each do |s|
+          @cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg", :height=>154, :width=>394, :crop=>"scale") 
+          s.send(@cloud_img)
         end
       end
     end
