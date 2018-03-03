@@ -127,7 +127,8 @@ get '/websocket' do
       end
       def websocket_image(img_name)
         settings.sockets.each do |s|
-          @cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg", :width=>150, :height=>100, :crop=>"scale") 
+          #@cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg", :width=>150, :height=>100, :crop=>"scale") 
+          @cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg") 
           s.send(@cloud_img)
         end
       end
