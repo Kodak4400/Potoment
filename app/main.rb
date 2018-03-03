@@ -52,6 +52,7 @@ post '/callback' do
         }
         # メッセージを返す
         client.reply_message(event['replyToken'], message)
+        sk_message        
       # メッセージタイプが画像の場合
       when Line::Bot::Event::MessageType::Image
         path = './tmp/test.jpg'
@@ -118,6 +119,11 @@ get '/websocket' do
       ws.onclose do
         # wsを削除
         settings.sockets.delete(ws)
+      end
+      def sk_message
+        settings.sockets.each do |s|
+          s.send("aaa")
+        end
       end
     end
 #    settings.sockets.send("aaa")
