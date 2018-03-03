@@ -16,7 +16,7 @@ require 'date'
 
 require 'line/bot'
 
-get '/' do
+get '/potoment_page' do
   erb :potoment_page 
 end
 
