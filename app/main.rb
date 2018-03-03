@@ -91,7 +91,7 @@ set :server, 'thin'
 # WebSocket通信で情報が更新された時にレスポンスを送る先を入れる
 set :sockets, []
 
-get '/' do
+get '/potoment_page' do
   erb :potoment_page 
 end
 
