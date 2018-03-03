@@ -17,7 +17,7 @@
     ws.onclose = () => console.log('connection closed');
     // サーバーからsendされた時に実行される関数 m=sendが引数
     ws.onmessage = m => {
-      let objimg = document.createElement('cloud_img');
+      let objimg = document.createElement('img');
       objimg.src = m.data;
       console.log(objimg);
       // objimg.src = "./public/images/CHOYA_SINGLE.JPG";
