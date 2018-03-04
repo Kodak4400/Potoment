@@ -55,8 +55,8 @@ post '/callback' do
         websocket_message
       # メッセージタイプが画像の場合
       when Line::Bot::Event::MessageType::Image
-        path = './tmp/test.jpg'
         pid = DateTime.now.strftime('%Y%m%d%H%M%S')
+        path = "./tmp/#{pid}.jpg"
         response = client.get_message_content(event.message['id'])
         file = File.open(path, "wb")
         file.write(response.body)
@@ -104,7 +104,7 @@ get '/websocket' do
       end
       # WebSocket通信によってメッセージが来た時の処理をまとめる
       ws.onmessage do |msg|
-        puts msg
+#        puts msg
 #        settings.sockets.each do |s|
           # WebSocket通信でsndする
           # WebSocket通信で、クライアントに向かって情報をおくる
@@ -117,11 +117,11 @@ get '/websocket' do
         # wsを削除
         settings.sockets.delete(ws)
       end
-      def websocket_message
-        settings.sockets.each do |s|
-          s.send("aaa")
-        end
-      end
+#      def websocket_message
+#        settings.sockets.each do |s|
+#          s.send("aaa")
+#        end
+#      end
       def websocket_image(img_name)
         settings.sockets.each do |s|
           #@cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg", :width=>150, :height=>100, :crop=>"scale") 
