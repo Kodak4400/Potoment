@@ -3,11 +3,69 @@
 <head>
   <meta charset="utf-8">
   <!--  <script src="/javascript/application2.js" type="text/javascript"></script> -->
-  <title>Test</title>
+  <script type="text/javascript">
+  // loadした時
+  window.addEventListener('load', () => {
+//    let msgbox = document.getElementById('file');
+//    let form = document.getElementById('form');
+//    let sendFile = document.getElementById('send-file');
+    let ws = new WebSocket('wss://' + window.location.host + '/websocket');
+    //let ws = new ReconnectingWebSocket('wss://' + window.location.host + '/websocket');
+
+    // 接続開始メソッド ()なので引数なし
+    ws.onopen = () => console.log('connection opened');
+    // 接続終了メソッド ()なので引数なし
+    ws.onclose = () => console.log('connection closed');
+    // サーバーからsendされた時に実行される関数 m=sendが引数
+    ws.onmessage = m => {
+      let objimg = document.createElement('img');
+      objimg.src = m.data;
+      console.log(objimg);
+      let objBody = document.getElementsByTagName("div").item(1);
+      objBody.appendChild(objimg);
+    }
+
+    var prevention_timeout = function(){
+      ws.send("aaa")
+    }
+    setInterval(prevention_timeout, 20000)
+
+    // テキストボックスをクリックされた時
+    //sendMsg.addEventListener('click', () => sendMsg.value = '');
+
+/*
+    //formでsubmitされたとき
+    form.addEventListener('submit', e => {
+      var file = sendFile.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function() {
+        var ar = new Uint8Array(reader.result);
+        ws.send(file.name);
+        ws.send(ar.buffer);
+        //ws.close();
+      }
+
+      reader.readAsArrayBuffer(file);
+
+      //ws.send(sendFile.data);
+      // 送信後、テキストボックスをクリア
+      //sendMsg.value = '';
+      // デフォルトアクションを抑止する
+      e.preventDefault();
+    });
+*/
+  });
+  </script>
+  <style type="text/css">
+    .center { text-align:center; }    
+    .img_layout { float:left; margin:5% }
+  </style>
+  <title>Potoment_Ver_1_0</title>
 </head>
 <body>
-  <%= yield %>
-
+  <div class="center"><h1>Congratulations</h1></div>
+    <%= yield %>
 </body>
 </html>
 
