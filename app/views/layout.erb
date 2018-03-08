@@ -23,12 +23,11 @@
       let objdiv = document.createElement('div');
       objdiv.className='img_layout';
 
-      let objdivimg = objdivappendChild(objimg);
-
+      ovjdiv.insertAdjacentHTML('afterbegin',objimg);
       console.log(objdiv);
 
       let objBody = document.getElementsByTagName("body").item(0);
-      objBody.appendChild(objdivimg);
+      objBody.appendChild(objdiv);
     }
 
     var prevention_timeout = function(){
