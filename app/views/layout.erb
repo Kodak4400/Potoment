@@ -20,9 +20,12 @@
     ws.onmessage = m => {
       let objimg = document.createElement('img');
       objimg.src = m.data;
-      console.log(objimg);
+      let objdiv = document.createElement('div');
+      objdiv.setAttribute('class','img_layout');
+      objdiv.innerHTML = objimg
+      console.log(objdiv);
       let objBody = document.getElementsByTagName("section").item(0);
-      objBody.appendChild(objimg);
+      objBody.appendChild(objdiv);
     }
 
     var prevention_timeout = function(){
@@ -65,11 +68,11 @@
 </head>
 <body>
   <div class="center"><h1>Congratulations</h1></div>
-  <section>
   <div class="img_layout">
+   <section>
     <%= yield %>
+   </section>
   </div>
-  </section>
 </body>
 </html>
 
