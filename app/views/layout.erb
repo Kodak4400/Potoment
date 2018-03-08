@@ -21,7 +21,7 @@
       let objimg = document.createElement('img');
       objimg.src = m.data;
       console.log(objimg);
-      let objBody = document.getElementsByTagName("div").item(1);
+      let objBody = document.getElementsByTagName("section").item(0);
       objBody.appendChild(objimg);
     }
 
@@ -65,7 +65,11 @@
 </head>
 <body>
   <div class="center"><h1>Congratulations</h1></div>
+  <section>
+  <div class="img_layout">
     <%= yield %>
+  </div>
+  </section>
 </body>
 </html>
 
