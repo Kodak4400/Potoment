@@ -6,9 +6,9 @@
   <script type="text/javascript">
   // loadした時
   window.addEventListener('load', () => {
-    let msgbox = document.getElementById('file');
-    let form = document.getElementById('form');
-    let sendFile = document.getElementById('send-file');
+//    let msgbox = document.getElementById('file');
+//    let form = document.getElementById('form');
+//    let sendFile = document.getElementById('send-file');
     let ws = new WebSocket('wss://' + window.location.host + '/websocket');
     //let ws = new ReconnectingWebSocket('wss://' + window.location.host + '/websocket');
 
@@ -58,7 +58,7 @@
   });
   </script>
   <style type="text/css">
-    .center { text-align:center; }    
+    .center { text-align: center; }    
     .img_laytout { margin: 5%;}   
   </style>
   <title>Potoment_Ver_1_0</title>
