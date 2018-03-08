@@ -21,11 +21,14 @@
       let objimg = document.createElement('img');
       objimg.src = m.data;
       let objdiv = document.createElement('div');
-      objdiv.setAttribute('class','img_layout');
-      objdiv.innerHTML = objimg
+      objdiv.className='img_layout';
+
+      let objdivimg = objdivappendChild(objimg);
+
       console.log(objdiv);
-      let objBody = document.getElementsByTagName("section").item(0);
-      objBody.appendChild(objdiv);
+
+      let objBody = document.getElementsByTagName("body").item(0);
+      objBody.appendChild(objdivimg);
     }
 
     var prevention_timeout = function(){
@@ -68,11 +71,7 @@
 </head>
 <body>
   <div class="center"><h1>Congratulations</h1></div>
-  <div class="img_layout">
-   <section>
-    <%= yield %>
-   </section>
-  </div>
+  <%= yield %>
 </body>
 </html>
 
