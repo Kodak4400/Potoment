@@ -1,0 +1,3 @@
+<% if @cloud_img != "" %>
+  <div class="img_layout"><img src=<%= @cloud_img %>></div>
+<% end %>
