@@ -27,7 +27,8 @@
       console.log(objdiv);
 
       let objBody = document.getElementsByTagName("body").item(0);
-      objBody.appendChild(objdiv);
+      objBody.insertAdjacentElement('afterbegin',objdiv);
+//      objBody.appendChild(objdiv);
     }
 
     var prevention_timeout = function(){
