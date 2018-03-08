@@ -16,6 +16,13 @@ require 'date'
 
 require 'line/bot'
 
+get '/test_page' do
+  @t_cloud_img = Cloudinary::Utils.cloudinary_url("20180308010833.jpg")
+  @t_cloud_img = Cloudinary::Utils.cloudinary_url("20180308010857.jpg")
+  erb :test_page
+end
+
+
 get '/potoment_page' do
   erb :potoment_page 
 end
