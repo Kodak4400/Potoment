@@ -67,7 +67,8 @@ post '/callback' do
         response = client.get_message_content(event.message['id'])
         file = File.open(path, "wb")
         file.write(response.body)
-        Cloudinary::Uploader.upload(path, :public_id => pid, :width => 200, :height => 150, :crop => :limit)
+        #Cloudinary::Uploader.upload(path, :public_id => pid, :width => 200, :height => 150, :crop => :limit)
+        Cloudinary::Uploader.upload(path, :public_id => pid)
         puts system('ls -ltr ./tmp') 
         message = {
            type: 'text',
@@ -132,7 +133,7 @@ get '/websocket' do
       def websocket_image(img_name)
         settings.sockets.each do |s|
           #@cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg", :width=>150, :height=>100, :crop=>"scale") 
-          @cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg", {secure: true, angle: "exif"}) 
+          @cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg", {secure: true, :width=>200, :height=>150, angle: "exif"}) 
           s.send(@cloud_img)
         end
       end
