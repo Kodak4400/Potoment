@@ -68,7 +68,7 @@ post '/callback' do
         file = File.open(path, "wb")
         file.write(response.body)
         #Cloudinary::Uploader.upload(path, :public_id => pid, :width => 450, :height => 150, :crop => :limit)
-        Cloudinary::Uploader.upload(path, :public_id => pid, :width => 350, :crop => :scale)
+        Cloudinary::Uploader.upload(path, :public_id => pid, :width => 0.5, :height => 0.5 , :crop => :scale)
         puts system('ls -ltr ./tmp') 
         message = {
            type: 'text',
