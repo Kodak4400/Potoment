@@ -16,25 +16,28 @@ require 'date'
 
 require 'line/bot'
 
+# デバック用
 get '/test_page' do
   @t_cloud_img = Cloudinary::Utils.cloudinary_url("20180308010833.jpg")
   @t_cloud_img = Cloudinary::Utils.cloudinary_url("20180308010857.jpg")
   erb :test_page
 end
 
-
+# Potomentのトップページ
 get '/potoment_page' do
   erb :potoment_page 
 end
 
-# @clientがnull or falseの場合、代入する
+# clientの環境設定
 def client
+  # @clientがnull or falseの場合、代入する
   @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
     config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
   }
 end
 
+# LINEからのリクエスト受信
 post '/callback' do
   # リクエストメソッドのポストデータを取得 
   body = request.body.read
@@ -55,36 +58,46 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         message = {
           type: 'text',
-          text: event.message['text']
+          text: '画像しか送信できません。'
         }
-        # メッセージを返す
+        # メッセージをWebSocketで返信
         client.reply_message(event['replyToken'], message)
-        websocket_message
+        # websocket_message
       # メッセージタイプが画像の場合
       when Line::Bot::Event::MessageType::Image
+        # 画像ファイル名を指定
         pid = DateTime.now.strftime('%Y%m%d%H%M%S')
         path = "./tmp/#{pid}.jpg"
         response = client.get_message_content(event.message['id'])
+        # 画像ファイルをtmpディレクトリに書き込み
         file = File.open(path, "wb")
         file.write(response.body)
+        # Cloudinaryへアップロード
         #Cloudinary::Uploader.upload(path, :public_id => pid, :width => 450, :height => 150, :crop => :limit)
         Cloudinary::Uploader.upload(path, :public_id => pid, :width => 0.2, :height => 0.2, :crop => :scale)
+        # デバック用
         puts system('ls -ltr ./tmp') 
+        # tmpディレクトリに配置した画像ファイルを削除
+        File.unlink(file)
         message = {
            type: 'text',
            text: '画像をアップロードしました。'
         }
+        # 画像ファイルをWebSocketで返信
         client.reply_message(event['replyToken'], message)
-        File.unlink(file)
         websocket_image(pid)
-        #@cloud_img = Cloudinary::Utils.cloudinary_url("#{pid}.jpg", :height=>154, :width=>394, :crop=>"scale") 
-        #puts @cloud_img
-        #@page_title = "index message"
-        #erb :potoment_page
+      # メッセージタイプが画像、テキスト以外  
       when Line::Bot::Event::MessageType::Video
-        response = client.get_message_content(event.message['id'])
-        tf = Tempfile.open("content")
-        tf.write(response.body)
+        message = {
+          type: 'text',
+          text: '画像しか送信できません。'
+        }
+        # メッセージをWebSocketで返信
+        client.reply_message(event['replyToken'], message)
+        # 後日削除
+        #response = client.get_message_content(event.message['id'])
+        #tf = Tempfile.open("content")
+        #tf.write(response.body)
       end
     end
   }
@@ -92,44 +105,43 @@ post '/callback' do
  "OK"
 end
 
-# Cloudinaryから画像取得
-# WebSocketでチャットを作る
-# サーバとして'thin'を使う
+# Cloudinaryから画像取得し、WebSocketを使用して表示する
+# サーバは'thin'を使う
 set :server, 'thin'
-# WebSocket通信で情報が更新された時にレスポンスを送る先を入れる
+# WebSocketで情報が更新された時にレスポンス送り先を入れる
 set :sockets, []
 
+# WebSocket用
 get '/websocket' do
-  # WebSocket通信かどうか
+  # WebSocket通信かどうかを判定
   if request.websocket?
     # WebSocket通信の場合、wsにセッティング情報書き込み
     # wsは、サーバーの情報やクライアントの情報が詰まった変数
     request.websocket do |ws|
-      # WebSocket通信のための接続がされようとしている時の処理をまとめる
+      # onopen:WebSocket通信のための接続がされようとしている時の処理をまとめる
       ws.onopen do
         # set :socketsを呼び出し
         settings.sockets << ws
       end
-      # WebSocket通信によってメッセージが来た時の処理をまとめる
+      # onmessage:WebSocket通信によってメッセージが来た時の処理をまとめる
       ws.onmessage do |msg|
-#        puts msg
-#        settings.sockets.each do |s|
-          # WebSocket通信でsndする
-          # WebSocket通信で、クライアントに向かって情報をおくる
-          # sendメソッドでは、１クライアントにしか送れない。
-#          s.send(msg)
-#        end
+         # WebSocket通信でsndする
+         # WebSocket通信で、クライアントに向かって情報をおくる
+         # sendメソッドでは、１クライアントにしか送れない。
+         # この処理はタイムアウト防止のため、受信後は何もしない 
       end
-      # WebSocket通信が切断された時の処理をまとめる
+      # onclose:WebSocket通信が切断された時の処理をまとめる
       ws.onclose do
         # wsを削除
         settings.sockets.delete(ws)
       end
-#      def websocket_message
-#        settings.sockets.each do |s|
-#          s.send("aaa")
-#        end
-#      end
+      # デバック用：LINEからのメッセージを受信後の処理
+      # def websocket_message
+      #  settings.sockets.each do |s|
+      #    s.send("aaa")
+      #  end
+      #end
+      # LINEからの画像ファイルをWebSocketを通して返信
       def websocket_image(img_name)
         settings.sockets.each do |s|
           #@cloud_img = Cloudinary::Utils.cloudinary_url("#{img_name}.jpg", :width=>150, :height=>100, :crop=>"scale") 
