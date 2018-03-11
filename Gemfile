@@ -5,7 +5,7 @@ source "https://rubygems.org"
 
 # gem "rails"
 # sinatraを使う
-gem 'sinatra'
+gem 'sinatra', '2.0.1'
 # 開発において、rubyの再起動を不要にさせる
 gem 'sinatra-contrib'
 # sinatra用websocket
