@@ -24,3 +24,7 @@ gem 'heroku'
 gem 'line-bot-api'
 # rack
 #gem 'rack'
+# Gitによるセキュリティ警告が発生したたため、アップデート
+gem 'rest-client', '~> 1.7.3'
+gem 'rubyzip', '~> 1.2.1'
+
